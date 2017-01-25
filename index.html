@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .redClass {
+            background-color: red;
+        }
+
+        #list-1 {
+            color: red;
+            font-size: 20px;
+        }
+
+        .active {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <p>{{message}}</p>
+
+        <div v-html="msgHtml"></div>
+
+        <label for="r1">change color:</label>
+        <input type="checkbox" v-model="class1" id="r1"/>
+        <br/>
+        <div v-bind:class="{'redClass':class1}">
+            directive v-bind:class
+        </div>
+
+        <p>{{message.split('').reverse().join('')}}</p>
+        <div v-bind:id="'list-' + id">他天天天天天天天天</div>
+        <!--v-bind缩写方式-->
+        <div :id="'list-' + id">他天天天天天天天天</div>
+
+        <p v-if="seen">now, you can see me.</p>
+
+        <pre><a v-bind:href="url">CUIT</a></pre>
+        
+        <p><a v-on:click.prevent="reverseMessage" href="">反转字符串</a></p>
+        <p><a @click.prevent="reverseMessage" href="">反转字符串</a></p>
+
+        <p>{{myMessage | capitalize}}</p>
+
+        <div v-if="Math.random() > 0.5">
+            sorry
+        </div>
+        <div v-else>
+            not sorry
+        </div>
+
+        <div v-if="type === 'A'">
+            i am A
+        </div>
+        <div v-else-if="type === 'B'">
+            i am B
+        </div>
+        <div v-else-if="type === 'C'">
+            i am C
+        </div>
+        <div v-else>
+            not A/B/C
+        </div>
+
+        <!--v-show与v-if的区别就在于，当值为false的时候，
+        v-if是没有这个元素，而v-show是加了个样式display：none来隐藏-->
+        <div v-show="ok">i am ok</div>
+
+        <ol>
+            <li v-for="site in sites">
+                {{site.name}}
+            </li>
+        </ol>
+
+        <ul>
+            <li v-for="(value, key, index) in object">
+              {{index}}--- {{key}} : {{value}}
+            </li>
+        </ul>
+
+
+        <div v-bind:class="{'active':isActive}">00000</div>
+    </div>
+
+
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            message: 'hello vue.js',
+            msgHtml: '<h1>我是使用v-html指令输出html代码.</h1>',
+            class1: false,
+            id: 1,
+            seen: true,
+            url: 'http://www.cuit.edu.cn',
+            myMessage: 'happy new year',
+            type: 'C',
+            ok: false,
+            sites: [
+                {name: 'jessie'},
+                {name: 'cassie'},
+                {name: 'Aini'}
+            ],
+            object: {
+                name: '成都信息工程大学',
+                url: 'http://www.cuit.edu.cn',
+                slogan: 'i love cuit'
+            },
+            isActive: true
+        },
+        /*我们可以使用 methods 来替代 computed，效果上两个都是一样的，
+        但是 computed 是基于它的依赖缓存，只有相关依赖发生改变时才会重新取值。
+        而使用 methods ，在重新渲染的时候，函数总会重新调用执行。
+         可以说使用 computed 性能会更好，但是如果你不希望缓存，你可以使用 methods 属性。*/
+        methods: {
+            reverseMessage: function(){
+                this.message = this.message.split('').reverse().join('');
+            }
+        },
+        filters: {
+            capitalize: function(value){
+                if(!value){
+                    return;
+                }
+                value = value.toString();
+                return value.charAt(0).toUpperCase() + value.slice(1);
+            }
+        }
+    });
+</script>
+</body>
+</html>
